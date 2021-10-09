@@ -29,22 +29,21 @@ q.put(s)
 # ustaw jego poprzednika jako jego samego, aby oznaczyć go jako odwiedzony
 parent[s] = s
 # dopóki kolejka nie jest pusta, czyli są jeszcze jakieś wierzchołki do odwiedzenia
-while q.empty():
-  # pobierz następny wierzchołek i usuń go z kolejki
-  cur_n = q.get()
+while not q.empty():
+    # pobierz następny wierzchołek i usuń go z kolejki
+    cur_n = q.get()
+    # przerwij jeśli dotarliśmy do celu
+    if cur_n == g:
+        break
 
-  # przerwij jeśli dotarliśmy do celu
-  if cur_n == g:
-    break
-
-  # dla wszystkich krawędzi z aktualnego wierzchołka
-  for nh in nodes[cur_n]:
-    # jeśli sąsiad nie był jeszcze odwiedzony
-    if nh not in visited:
-      # oznacz jako odwiedzony i dodaj do kolejki
-      parent[nh] = cur_n
-      visited.add( nh)
-      q.put(nh)
+    # dla wszystkich krawędzi z aktualnego wierzchołka
+    for nh in nodes[cur_n]:
+        # jeśli sąsiad nie był jeszcze odwiedzony
+        if nh not in visited:
+            # oznacz jako odwiedzony i dodaj do kolejki
+            parent[nh] = cur_n
+            visited.add( nh)
+            q.put(nh)
 
 # ścieżka do wierzchołka docelowego
 path = []
@@ -52,9 +51,11 @@ path = []
 # zaczynamy od wierzchołka docelowego i cofamy się po znalezionej ścieżce
 cur_n = g
 # dopóki nie dotrzemy do startu
-while cur_n != None:
+while cur_n != s:
   # dodajemy aktualny wierzchołek i przechodzimy do poprzednika
-  path.append( cur_n)
-  cur_n = parent[cur_n]
+    path.append( cur_n)
+    print(cur_n)
+    cur_n = parent[cur_n]
 # wierzchołki są w odwrotnej kolejności, więc odwracamy listę
 path.reverse()
+print(path)
