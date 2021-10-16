@@ -19,7 +19,12 @@ def func(array, values, step):
             maximal = value
         solution.append(value)
     plot.plot(np.linspace(0,step, iterations), solution)
+    plot.xlabel("Os X")
+    plot.ylabel("Os Y")
+    plot.legend("wykres")
+    plot.title("Wykres")
     plot.show()
+    
     return [minimal, maximal]
 
 if __name__=="__main__":

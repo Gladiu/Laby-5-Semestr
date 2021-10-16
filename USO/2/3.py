@@ -11,14 +11,12 @@ if __name__=="__main__":
     C = 0.0001
 
     sys = sig.TransferFunction(np.array([1, 0]), np.array([L, R, 1.0/C]))
-    
+
     responseStep = sig.step(sys)
-    plot.plot(responseStep[0], responseStep[1])
-    plot.show()
+    #plot.plot(responseStep[0], responseStep[2])
+    print(responseStep)
     
-    responsePulse = sig.impulse(sys)
-    plot.plot(responsePulse[0], responsePulse[1])
+    #responsePulse = sig.impulse(sys)
+    #plot.plot(responsePulse[0], responsePulse[1])
     
-
-
     plot.show()
