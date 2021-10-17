@@ -7,10 +7,12 @@ import matplotlib.pyplot as plot
 
 if __name__=="__main__":
     R = 12.0
-    L = 1.0
+    L = 0.15
     C = 0.0001
     # 3.1
-    sysTF = sig.TransferFunction([1, 0], [L, R, (1.0/C)])
+    num = [1, 0]
+    dem = [L, R, (1.0/C)]
+    sysTF = sig.TransferFunction(num, dem)
 
     responseStep = sig.step(sysTF)
     plot.plot(responseStep[0], responseStep[1])
@@ -33,6 +35,21 @@ if __name__=="__main__":
     plot.plot(responsePulse[0], responsePulse[1])
 
     # 3.3 
-    #sysSS2 = sig.tf2ss(sysTF.)
-    print(sysTF
+    sysSS2 = sig.tf2ss(num, dem)
+    sysTF2 = sig.ss2tf(A, B, C, D)
+    
+    responseStep = sig.step(sysTF2)
+    plot.plot(responseStep[0], responseStep[1])
+    
+    responsePulse = sig.impulse(sysTF2)
+    plot.plot(responsePulse[0], responsePulse[1])
+
+    responseStep = sig.step(sysSS2)
+    plot.plot(responseStep[0], responseStep[1])
+
+    responsePulse = sig.impulse(sysSS2)
+    plot.plot(responsePulse[0], responsePulse[1])
+    # Odpowiedzi sie pokrywaja w wiekszosci.
+    # Gdyby odpowiedzi sie nie pokrywaly te przeksztalcenia nie mialby sensu
+    # Przeksztalcenia sa jednoznaczne
     plot.show()
