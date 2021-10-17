@@ -53,8 +53,19 @@ class Agent:
         nodes= {}
         for x in range(self.size):
             for y in range(self.size):
-                if walls does not contain (x, y):
-                    if (x - 1, y ) not in walls:
+                nodes[(x, y)] = []
+                if  ((x - 1, y ) not in self.walls) and x-1 >= 0:
+                    nodes[(x,y)].append((x - 1, y))
+                if  ((x + 1, y ) not in self.walls):
+                    nodes[(x,y)].append((x + 1, y))
+                if  ((x, y + 1 ) not in self.walls):
+                    nodes[(x,y)].append((x, y + 1))
+                if  ((x, y - 1 ) not in self.walls) and y-1 >= 0:
+                    nodes[(x,y)].append((x, y - 1))
+        for key in list(nodes):
+            if len(nodes[key]) ==  0:
+                del nodes[key]
+        print(nodes)
 
         # s - wierzchołek startowy
         # g - wierzchołek docelowy
@@ -62,14 +73,12 @@ class Agent:
         s = self.loc
         g = self.goal
 
-        # Tworzenie ownika sasiadow
-        nodes[s] = []
-        for x in range
 
         # lista odwiedzonych wierzchołków
         visited = set()
         # słownik poprzedników
-        parent = {n: None for n in nodes}
+        #parent = {n: None for n in nodes}
+        parent = {}
 
         q = queue.Queue()
 

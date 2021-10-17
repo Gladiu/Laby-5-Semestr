@@ -46,8 +46,8 @@ def main():
     locs = list({*locations(env_size)}.difference(walls))
     # start and goal location
     start_goal = random.sample(locs, k=2)
-    start =(1,6)#start_goal[0]
-    goal = (3,9)#start_goal[1]
+    start =start_goal[0]
+    goal = start_goal[1]
 
     # create the environment and viewer
     env = LocWorldEnv(env_size, walls, start, goal)
