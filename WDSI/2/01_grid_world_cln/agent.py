@@ -24,16 +24,19 @@ class Agent:
         self.path = self.find_path()
 
     def __call__(self):
-        action = 'N'
-
-        # select action to reach first location in self.path
-        # TODO PUT YOUR CODE HERE
-
-
-
-        # ------------------
-
-        return action
+        current_tile = self.path[self.t]
+        next_tile = self.path[self.t+1]
+        return_value = 0
+        if int(current_tile[0] - next_tile[0]) == -1:
+            return_value = 'E'
+        if int(current_tile[0] - next_tile[0]) == 1:
+            return_value ='W'
+        if int(current_tile[1] - next_tile[1]) == -1:
+            return_value = 'N'
+        if int(current_tile[1] - next_tile[1]) == 1:
+            return_value = 'S'
+        self.t = self.t + 1
+        return return_value
 
     def find_path(self):
         path = []
@@ -56,16 +59,12 @@ class Agent:
                 nodes[(x, y)] = []
                 if  ((x - 1, y ) not in self.walls) and x-1 >= 0:
                     nodes[(x,y)].append((x - 1, y))
-                if  ((x + 1, y ) not in self.walls):
+                if  ((x + 1, y ) not in self.walls) and x+1 < 16:
                     nodes[(x,y)].append((x + 1, y))
-                if  ((x, y + 1 ) not in self.walls):
+                if  ((x, y + 1 ) not in self.walls) and y+1 < 16:
                     nodes[(x,y)].append((x, y + 1))
                 if  ((x, y - 1 ) not in self.walls) and y-1 >= 0:
                     nodes[(x,y)].append((x, y - 1))
-        for key in list(nodes):
-            if len(nodes[key]) ==  0:
-                del nodes[key]
-        print(nodes)
 
         # s - wierzchołek startowy
         # g - wierzchołek docelowy
