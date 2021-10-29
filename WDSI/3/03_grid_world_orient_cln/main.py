@@ -55,14 +55,14 @@ def main():
 
     # create the agent
     agent = Agent(env.size, env.walls, env.agentLoc, env.agentDir, goal)
-    t = 0.0
+    t = 0
     while env.agentLoc != goal:
         print('elapsed time %f' % -t)
 
         # get agent's path
         path = agent.get_path()
         # get agent's action
-        action = agent()
+        action = agent(t)
 
         print('action ', action)
 

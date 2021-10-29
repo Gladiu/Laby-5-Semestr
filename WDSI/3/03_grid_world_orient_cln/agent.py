@@ -4,9 +4,12 @@
 import random
 import numpy as np
 import queue
+import math
 
 from gridutil import *
 
+def calc_distance(x1, y1, x2, y2):
+    return math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
 
 class Agent:
     def __init__(self, size, walls, loc, dir, goal):
@@ -23,13 +26,13 @@ class Agent:
         self.t = 0
         self.path, self.actions = self.find_path()
 
-    def __call__(self):
+    def __call__(self, t):
         action = 'N'
 
         # select action to reach first location in self.path
-        # TODO PUT YOUR CODE HERE
+        # TODO PUT YOUR CODE HERE 
 
-
+        action = self.path[t]
 
         # ------------------
 
@@ -38,15 +41,24 @@ class Agent:
     def find_path(self):
         path = []
         actions = []
-        print(self.locations)
         # find path from sel.loc to self.goal
         # TODO PUT YOUR CODE HERE
-
         # s - wierzchołek startowy
         # g - wierzchołek docelowy
         # nodes - lista wierzchołków
         # najpierw jest numer wierzchołka, a potem jest koszt
-        nodes =  self.graph
+        nodes =  {}
+        for place in self.locations:
+            nodes[place] = []
+            if (place[0]+1, place[1]) in self.locations:
+                nodes[place].append((place[0]+1, place[1]))
+            if (place[0]-1, place[1]) in self.locations:
+                nodes[place].append((place[0]-1, place[1]))
+            if (place[0], place[1]+1) in self.locations:
+                nodes[place].append((place[0], place[1]+1))
+            if (place[0], place[1]-1) in self.locations:
+                nodes[place].append((place[0], place[1]-1))
+        print(nodes)
         s = self.loc
         g = self.goal
         # zbiór wierzchołków odwiedzonych
@@ -80,7 +92,7 @@ class Agent:
                 # pobierz koszt sąsiada lub przypisz mu inf
                 old_cost = cost[nh]
                 # oblicz koszt dla danego wierzchołka 
-                #distance = calc_distance(cur_n[0], cur_n[1], nh[0], nh[1])
+                distance = calc_distance(cur_n[0], cur_n[1], nh[0], nh[1])
                 new_cost = cost[cur_n] + distance
                # rozważ nową ścieżkę tylko wtedy, gdy jest lepsza niż dotychczas najlepsze ścieżka
                 if new_cost < old_cost:
