@@ -11,14 +11,14 @@ from gridutil import *
 def calc_cost(dir, x1, y1, x2, y2):
     cur_dir = []
     if dir == 'W':
-        cur_dir = np.array([[-1], [0]])
-    if dir == 'E':
         cur_dir = np.array([[1], [0]])
+    if dir == 'E':
+        cur_dir = np.array([[-1], [0]])
     if dir == 'S':
         cur_dir = np.array([[0], [-1]])
     if dir == 'N':
         cur_dir = np.array([[0], [1]])
-    next_dir = np.array([[x1 - x2], [y1 - y2]])
+    next_dir = np.array([[x2 - x1], [y2 - y1]])
     actioncost = 1.0
     turnright = (np.array([[0, 1],[-1, 0]]) @ cur_dir) == next_dir
     turnleft =  np.array([[0, -1], [1, 0]]) @ cur_dir == next_dir
