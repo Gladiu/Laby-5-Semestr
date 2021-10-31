@@ -13,7 +13,7 @@ from env import *
 
 def main():
     # comment to get different scenarios
-    # random.seed(13)
+    #random.seed(12)
     # rate of executing actions
     rate = 1
     # size of the environment
@@ -73,7 +73,7 @@ def main():
 
         action_cost = env.doAction(action)
 
-        t += action_cost
+        t += 1
 
     # pause until mouse clicked
     view.pause()

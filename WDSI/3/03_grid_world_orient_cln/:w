@@ -8,63 +8,72 @@ import math
 
 from gridutil import *
 
+def calc_next_dir(cur_dir, action):
+    if action == 'turnright':
+        rotation_matrix = np.array([[0, -1],[1, 0]])
+    if action == 'turnleft':
+        rotation_matrix = np.array([[0, 1],[-1, 0]])
+    if action == 'forward':
+        rotation_matrix = np.array([[1, 0],[0, 1]])
+    if cur_dir == 'E':
+        vec_dir = np.array([[0], [-1]])
+    if cur_dir == 'W':
+        vec_dir = np.array([[0], [1]])
+    if cur_dir == 'N':
+        vec_dir = np.array([[-1], [0]])
+    if cur_dir == 'S':
+        vec_dir = np.array([[1], [0]])
+    next_dir = rotation_matrix @ vec_dir
+    if next_dir[0] == 0 and next_dir[1] == 1:
+        return 'E'
+    if next_dir[0] == 0 and next_dir[1] == -1:
+        return 'W'
+    if next_dir[0] == 1 and next_dir[1] == 0:
+        return 'S'
+    if next_dir[0] == -1 and next_dir[1] == 0:
+        return 'N'
+
 def calc_cost(dir, x1, y1, x2, y2):
     cur_dir = []
+    if dir == 'S':
+        cur_dir = np.array([[0], [1]])
+    if dir == 'N':
+        cur_dir = np.array([[0], [-1]])
+    if dir == 'W':
+        cur_dir = np.array([[1], [0]])
     if dir == 'W':
         cur_dir = np.array([[-1], [0]])
-    if dir == 'E':
-        cur_dir = np.array([[1], [0]])
-    if dir == 'S':
-        cur_dir = np.array([[0], [-1]])
-    if dir == 'N':
-        cur_dir = np.array([[0], [1]])
     next_dir = np.array([[x1 - x2], [y1 - y2]])
     actioncost = 1.0
-    turnright = (np.array([[0, 1],[-1, 0]]) @ cur_dir) == next_dir
-    turnleft =  np.array([[0, -1], [1, 0]]) @ cur_dir == next_dir
+    rotation_matrix = np.array([[0, -1],[1, 0]])
+    turnright = (rotation_matrix @ cur_dir) == next_dir
+    turnleft = rotation_matrix @ rotation_matrix @ rotation_matrix @ cur_dir == next_dir
     if turnright.all():
         actioncost = 2.0
     if turnleft.all():
         actioncost = 5.0
     return math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)) + actioncost
 
-def calc_movement(dir, x1, y1, x2, y2):
+def calc_action(dir, x1, y1, x2, y2):
     cur_dir = []
-    if dir == 'W':
-        cur_dir = np.array([[-1], [0]])
-    if dir == 'E':
-        cur_dir = np.array([[1], [0]])
-    if dir == 'N':
-        cur_dir = np.array([[0], [1]])
     if dir == 'S':
+        cur_dir = np.array([[0], [1]])
+    if dir == 'N':
         cur_dir = np.array([[0], [-1]])
-    next_dir = np.array([[x2 - x1], [y2 - y1]])
-    print('------------')
-    print(cur_dir)
-    print(next_dir)
+    if dir == 'W':
+        cur_dir = np.array([[1], [0]])
+    if dir == 'E':
+        cur_dir = np.array([[-1], [0]])
+    next_dir = np.array([[x1 - x2], [y1 - y2]])
     action = 'forward'
-    turnright = (np.array([[0, 1],[-1, 0]]) @ cur_dir) == next_dir
-    turnleft =  (np.array([[0, -1],[1, 0]]) @ cur_dir) == next_dir
-    turnaround = (np.array([[0, -1],[1, 0]]) @ np.array([[0, -1],[1, 0]]) @ cur_dir) == next_dir
-    if turnleft.all():
-        action = 'turnleft'
+    rotation_matrix = np.array([[0, 1],[-1, 0]])
+    turnright = (rotation_matrix @ cur_dir) == next_dir
+    turnleft = rotation_matrix @ rotation_matrix @ rotation_matrix @ cur_dir == next_dir
     if turnright.all():
         action = 'turnright'
-    if turnaround.all():
-        action = 'turnright'
-    print(action)
-    new_dir = 0
-    if turnaround.all():
-        next_dir =np.array([[0, 1],[-1, 0]]) @ cur_dir 
-    if next_dir[0] == 1 and next_dir[1] == 0:
-        new_dir = 'E'
-    if next_dir[0] == -1 and next_dir[1] == 0:
-        new_dir = 'W'
-    if next_dir[0] == 0 and next_dir[1] == 1:
-        new_dir = 'N'
-    if next_dir[0] == 0 and next_dir[1] == -1:
-        new_dir = 'S'
-    return (action, new_dir)
+    if turnleft.all():
+        action = 'turnleft'
+    return action
 
 class Agent:
     def __init__(self, size, walls, loc, dir, goal):
@@ -164,10 +173,10 @@ class Agent:
         cur_dir = self.dir
         for i in range(len(path)-1):
             while True:
-                action,cur_dir = calc_movement(cur_dir, path[i][0], path[i][1], path[i+1][0], path[i+1][1])
-                #print(cur_dir, path[i], path[i+1], action)
-                print( path[i], path[i+1])
+                action = calc_action(cur_dir, path[i][0], path[i][1], path[i+1][0], path[i+1][1])
+                print(cur_dir, path[i], path[i+1])
                 if action != 'forward':
+                    cur_dir = calc_next_dir(cur_dir, action)
                     actions.append(action)
                 else:
                     actions.append('forward')
