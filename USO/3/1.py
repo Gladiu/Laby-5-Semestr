@@ -35,8 +35,8 @@ B.append(np.array([[1], [1], [1]]))
 
 # Rysunek 3 nie sterowalny
 
-A.append(np.array([[0, 0, 0],[0, -0.5, 0.5], [0, 0.5, -0.5]]))
-B.append(np.array([[1.0], [0.5], [0.5]]))
+A.append(np.array([[0]]))
+B.append(np.array([[1]]))
 
 # Rysunek 4 sterowalny
 
@@ -53,7 +53,6 @@ K[1] = np.hstack((K[1], A[1]@A[1]@B[1]))
 print(np.linalg.matrix_rank(K[1]))
 
 K[2] = np.hstack((B[2], A[2]@B[2]))
-K[2] = np.hstack((K[2], A[2]@A[2]@B[2]))
 print(np.linalg.matrix_rank(K[2]))
 
 K[3] = np.hstack((B[3], A[3]@B[3]))
@@ -68,13 +67,16 @@ for i in range(4):
     response = []
     t = np.linspace(0, 1000, 1000)
     u = np.sin(t)
-    if i == 1 or i == 2:
+    if i == 1:
         sys = sig.StateSpace(A[i], B[i], np.array([[0, 0, 1]]), 0) 
         response = sig.lsim(sys, u, t)
     if i == 0 or i == 3:
         sys = sig.StateSpace(A[i], B[i], np.array([[1, 0]]), 0) 
         response = sig.lsim(sys, u, t)
+    if i == 2:
+        sys = sig.StateSpace(A[i], B[i], np.array([[1]]), 0) 
+        response = sig.lsim(sys, u, t)
     plot.plot(response[0], response[1])
-    # Uzyskane przebiegi potwierdzają poprzednie przypuszczenia
+    # Uzyskane przebiegi potwierdzają poprzednie przypuszczenia że układy sterowalne mają odpowiedź która się stabilizuje
     # Różne funkcje do symulacji korzystają z różnych solverów
     plot.show()
