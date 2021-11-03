@@ -2,9 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plot
 import scipy.signal as sig
 
-tf1 =  sig.TransferFunction([1.0], [1.0, 1.0, 2.0])
-tf2 =  sig.TransferFunction([1.0], [1.0, -4.0, 2.0, 5.0])
-tf3 =  sig.TransferFunction([1.0], [1.0, 6.0, 4.5, -5.0, -6.0])
+tf1 =  sig.TransferFunction([1.0], [1.0, -4.0])
+tf2 =  sig.TransferFunction([1.0], [10.0, -5.0, -12.0])
+tf3 =  sig.TransferFunction([1.0], [-5.5, -1.5, 2.5, -6.0])
 
 ss1 = sig.StateSpace(np.array([[-4.0, -1.0], [-2.0, -1.0]]), np.array([[2.0],[1.0]]), np.array([3.0, -4.0]), 0)
 ss2 = sig.StateSpace(np.array([[-1.0, 0.0, 1.0], [-6, 3, 5.0], [-5.0, -2.0, 4.0]]), np.array([[0], [1.0], [10.0]]), np.array([1.0, 1.0, 1.0]), 0)
