@@ -25,8 +25,9 @@ def force(t):
     return 1
 
 def obj(t, x):
-    noise  = np.random.normal(mu, sigma)
-    x_normal = A @ np.array([[x[0]],[x[1]]]) + B * force(t)
+    noise  = np.random.normal(mu, sigma) # Zadanie 4
+    imprefection_of_modeling = np.random.normal(mu, sigma) # Zadanie 5
+    x_normal = A @ np.array([[x[0]],[x[1]]]) + B * force(t) + imprefection_of_modeling
     x_est = A @ np.array([[x[0]],[x[1]]]) + B * force(t) + L@(x[0]+noise - C @ np.array([[x[2]],[x[3]]]))
     return [x_normal[0][0], x_normal[1][0], x_est[0][0], x_est[1][0]]
 
