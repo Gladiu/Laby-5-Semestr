@@ -21,9 +21,18 @@ numerator = np.polyadd(np.polymul(object.num, regulator.den), np.polymul(object.
 denominator = np.polymul(object.den, regulator.den)
 openloop = sig.TransferFunction(numerator, denominator)
 
-numerator = sig.TransferFunction(openloop.den, np.polyadd(openloop.den, openloop.num))
+closedloop = sig.TransferFunction(openloop.den, np.polyadd(openloop.den, openloop.num))
 
-res = sig.step(numerator)
+plot.figure()
 
+t = np.linspace(1, 10, 100)
+u = np.sin(t)
+res = sig.lsim(closedloop, u, t)
 plot.plot(res[0], res[1])
+
+plot.figure()
+res = sig.step(closedloop)
+plot.plot(res[0], res[1])
+
 plot.show()
+# Układ z losowo dobranymi parametrami jest stabilny jednak nie śledzi on wymuszenia
