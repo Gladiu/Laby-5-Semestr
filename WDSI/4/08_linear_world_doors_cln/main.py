@@ -51,9 +51,8 @@ def main():
         print('performing action')
         # get agent's action and execute it
         action = agent()
-        print('action: ', action)
+        #print('action: ', action)
         env.doAction(action)
-        
         agent.predict_posterior(action)
         P = agent.get_posterior()
         view.update(env, P)
@@ -61,9 +60,9 @@ def main():
         # uncomment to pause before action
         view.pause()
 
-        print('performing perception')
+        #print('performing perception')
         percept = env.getPercept()
-        print('percept: ', percept)
+        #print('percept: ', percept)
         # print('true loc: %d' % env.agentLoc[0])
         agent.correct_posterior(percept)
 

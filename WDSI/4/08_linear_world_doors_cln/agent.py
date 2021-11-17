@@ -50,15 +50,15 @@ class Agent:
     def predict_posterior(self, action):
         # predict posterior using requested action
         # TODO PUT YOUR CODE HERE
-        
-        self.P = np.zeros(len(self.P))
-        for i in range(len(self.P)):
-            for j in [-2, -1, 0, 1, 2]:
-                if abs(j) == 0:
-
-                if abs(j) == 1:
-                if abs(j) == 2:
-            self.P[i+j] = 
+        print(action)
+        print(self.loc)
+        for j in [-2, -1, 0, 1, 2]:
+            if abs(j) == 0:
+                self.P[action + j] += 1-6*self.eps_move
+            if abs(j) == 1:
+                self.P[action + j] += 2*self.eps_move
+            if abs(j) == 2:
+                self.P[action + j] += self.eps_move
             
 
         # ------------------
@@ -68,8 +68,8 @@ class Agent:
     def correct_posterior(self, percept):
         # correct posterior using measurements
         # TODO PUT YOUR CODE HERE
-
-        return
+        pass
+        #return
         # ------------------
 
     def get_posterior(self):
