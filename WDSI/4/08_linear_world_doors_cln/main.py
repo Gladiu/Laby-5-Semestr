@@ -53,8 +53,7 @@ def main():
         action = agent()
         print('action: ', action)
         env.doAction(action)
-        
-        agent.predict_posterior(action)
+
         P = agent.get_posterior()
         view.update(env, P)
         update(rate)

@@ -38,7 +38,7 @@ class Agent:
 
         # use information about requested action to update posterior
         # TODO PUT YOUR CODE HERE
-
+        self.predict_posterior(action)
 
 
         # ------------------
@@ -51,26 +51,45 @@ class Agent:
         # predict posterior using requested action
         # TODO PUT YOUR CODE HERE
         
-        self.P = np.zeros(len(self.P))
         for i in range(len(self.P)):
             for j in [-2, -1, 0, 1, 2]:
+                probalility = 0
                 if abs(j) == 0:
-
+                    probalility = 1- 6*self.eps_move
                 if abs(j) == 1:
+                    probalility = 2*self.eps_move
                 if abs(j) == 2:
-            self.P[i+j] = 
-            
+                    probalility = self.eps_move
+                index = i+j+action
+                if index >= len(self.P-1):
+                    index = index - len(self.P-1)
+                self.P[index] = probalility * self.P[index]
 
         # ------------------
-
-        #return
+        return 
 
     def correct_posterior(self, percept):
         # correct posterior using measurements
         # TODO PUT YOUR CODE HERE
+        probability = 0
+        for i in range(len(self.P)):
+            index = i
+            if index >= len(self.P-1):
+                index = index - len(self.P-1)
 
+            if percept and self.P[index] in self.doors:
+                probability = 1 - self.eps_perc_true
+            if percept == False and self.P[index] in self.doors:
+                probability = self.eps_perc_true
+            if percept == False and self.P[index] in self.doors == False:
+                probability = 1 - self.eps_perc_false
+            if percept and self.P[index] in self.doors == False:
+                probability = self.eps_perc_false
+            self.P[index] = probability * self.P[index]
+        
         return
         # ------------------
 
     def get_posterior(self):
+        print(self.P)
         return self.P
