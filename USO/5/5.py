@@ -20,14 +20,14 @@ def main():
     Ti = 1
     Td = 0.4
 
-    simulated_object = sig.TransferFunction([1],[L, R, 1/C])
+    simulated_object = sig.TransferFunction([1, 0],[L, R, 1/C])
 
     # Parameters of regulator
     regulator = sig.TransferFunction([Td*Ti*Kp, Ti*Kp, Kp], [Ti, 0])
 
     open_loop = sig.TransferFunction(np.polymul(regulator.num, simulated_object.num),  np.polymul(regulator.den, simulated_object.den))
     closed_loop = sig.TransferFunction([open_loop.den], np.polyadd(open_loop.den, open_loop.num))
-    t = np.linspace(0, 30, 1000)
+    t = np.linspace(0, 7, 1000)
     u = np.ones(len(t))
     plot.figure()
     res = sig.lsim(closed_loop, u, t)
