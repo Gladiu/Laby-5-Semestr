@@ -9,6 +9,11 @@ def add_transfer_functions(transfer_1, transfer_2):
     denominator = np.polymul(transfer_1.den, transfer_2.den)
     return sig.TransferFunction(nominator, denominator)
 
+def find_nearest(array, value):
+    array = np.asarray(array)
+    idx = (np.abs(array - value)).argmin()
+    return array[idx]
+
 def main():
     # Parametry układu
     L = 0.2
@@ -27,15 +32,17 @@ def main():
 
     open_loop = sig.TransferFunction(np.polymul(regulator.num, simulated_object.num),  np.polymul(regulator.den, simulated_object.den))
     closed_loop = sig.TransferFunction([open_loop.den], np.polyadd(open_loop.den, open_loop.num))
-    t = np.linspace(0, 30, 1000)
-    u = np.ones(len(t))
+
+    
     plot.figure()
-    res = sig.lsim(closed_loop, u, t)
-    plot.plot(res[0], res[1])
-    plot.figure()
-    res = sig.step(closed_loop)
+    res = sig.step(simulated_object)
     plot.plot(res[0], res[1])
     plot.show()
-    # Uklad z losowo dobranymi parametrami jest stabilny
+    steady_state_index = np.where(res[1] == np.amax(res[1])
+    steady_state_index = np.where(res[1] == np.amax(res[1])
+        T =     
+    T0 =     
+    K =     
+
 if __name__=='__main__':
     main()
