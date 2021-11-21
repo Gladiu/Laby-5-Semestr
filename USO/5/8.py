@@ -29,12 +29,14 @@ def main():
     plot.plot(res[0], res[1])
     # Parametry regulatora PID
     T0 = res[0][find_nearest_index(res[1], np.amax(res[1])*(0.1))]
-    T = res[0][find_nearest_index(res[1], np.amax(res[1])*(0.98))]
+    T = res[0][find_nearest_index(res[1], np.amax(res[1])*(0.98))] 
     K = res[0][-1]
+    R = T0/T
 
-    Kp = 1.2*T/(K*T0)
-    Ti = 2*T0
-    Td = 0.4*T0
+    print(R)
+    Kp = 0.7*T/(K*T0)
+    Ti = 1.4*T
+    Td = 4.7*T0
     # Parameters of regulator
     regulator = sig.TransferFunction([Td*Ti*Kp, Ti*Kp, Kp], [Ti, 0])
 
@@ -42,10 +44,9 @@ def main():
     closed_loop = sig.TransferFunction([open_loop.num], np.polyadd(open_loop.den, open_loop.num))
 
     plot.figure()
-    plot.title("Step response of an object with PID regulator tuned with Ziegler Nichols")
+    plot.title("Step response Chien-Hrones-Reswick")
     res = sig.step(closed_loop)
     plot.plot(res[0], res[1])
-    # Odpowiedź takiego układu jest stabilna z minimalnym przeregulowaniem
 
     IAE = []
     for i in range(len(res[1])):
@@ -56,10 +57,10 @@ def main():
     plot.figure()
     plot.title("IAE")
     plot.plot(res[0], IAE)
-
+    # Ciężko porównać odpowiedzi skokowe dwóch różnych obiektów jednak druga metoda ziegera nicholsa ma lepszy wskaźnik jakości ponieważ szybciej się ustala obiektów
+    # Metoda CHR nie ma w ogóle przeregulowania jednak cechuje się dużym czasem ustalania powodując że nie jest ona dostosowana do aplikacji gdzie zależy nam na czasie
     plot.show()
 
-    # Można ręcznie doprowadzać układ do mniejszej wartości błędów ręcznie zmieniając nastawy regulatora PID
 
 if __name__=='__main__':
     main()
