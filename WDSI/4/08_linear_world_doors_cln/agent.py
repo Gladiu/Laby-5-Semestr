@@ -40,7 +40,6 @@ class Agent:
         # TODO PUT YOUR CODE HERE
         self.predict_posterior(action)
 
-
         # ------------------
 
         self.t += 1
@@ -63,8 +62,10 @@ class Agent:
                 index = i+j+action
                 if index >= len(self.P-1):
                     index = index - len(self.P-1)
-                self.P[index] = probalility * self.P[index]
+                self.P[index] = probalility + self.P[index]
 
+        for i in range(len(self.P)):
+            self.P[i] = self.P[i]/np.amax(self.P)
         # ------------------
         return 
 
@@ -76,17 +77,18 @@ class Agent:
             index = i
             if index >= len(self.P-1):
                 index = index - len(self.P-1)
-
-            if percept and self.P[index] in self.doors:
+            if percept and index in self.doors:
                 probability = 1 - self.eps_perc_true
-            if percept == False and self.P[index] in self.doors:
+            if percept == False and index in self.doors:
                 probability = self.eps_perc_true
-            if percept == False and self.P[index] in self.doors == False:
+            if (percept == False) and ((index in self.doors) == False):
                 probability = 1 - self.eps_perc_false
-            if percept and self.P[index] in self.doors == False:
+            if percept and ((index in self.doors) == False):
                 probability = self.eps_perc_false
-            self.P[index] = probability * self.P[index]
+            self.P[index] = probability + self.P[index]
         
+        for i in range(len(self.P)):
+            self.P[i] = self.P[i]/amax(self.P)
         return
         # ------------------
 
