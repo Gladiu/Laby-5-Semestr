@@ -50,6 +50,7 @@ class Agent:
         # predict posterior using requested action
         # TODO PUT YOUR CODE HERE
         
+        copy_P = self.P
         for i in range(len(self.P)):
             for j in [-2, -1, 0, 1, 2]:
                 probalility = 0
@@ -62,10 +63,8 @@ class Agent:
                 index = i+j+action
                 if index >= len(self.P-1):
                     index = index - len(self.P-1)
-                self.P[index] = probalility + self.P[index]
+                self.P[index] += probalility * copy_P[index]
 
-        for i in range(len(self.P)):
-            self.P[i] = self.P[i]/np.amax(self.P)
         # ------------------
         return 
 
@@ -85,10 +84,11 @@ class Agent:
                 probability = 1 - self.eps_perc_false
             if percept and ((index in self.doors) == False):
                 probability = self.eps_perc_false
-            self.P[index] = probability + self.P[index]
-        
+            self.P[index] = probability * self.P[index]
+        # TODO: Normalize
+        norm_sum = np.sum(self.P)
         for i in range(len(self.P)):
-            self.P[i] = self.P[i]/amax(self.P)
+            self.P[i] = self.P[i]/norm_sum
         return
         # ------------------
 
