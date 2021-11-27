@@ -9,8 +9,11 @@ C = 0.5
 L = 0.2
 A = np.array([[0, 1], [-1/(L*C), -R/L]])
 B = np.array([[0],[1/L]])
-Q = np.array([[0,1],[1,0]])*5000
-R = np.eye(1)*10000
+# 2.5
+# Nie ma zależności pomiędzy dobranymi wartościami do Q oraz R
+# Q i R natomiast wpłwają na wskaźnik jakości j
+Q = np.eye(2)
+R = np.eye(1)
 
 # 2.1
 P = linalg.solve_continuous_are(A, B, Q, R)
@@ -30,6 +33,7 @@ def model(x,t):
 t = np.linspace(0, 5, 100)
 res = integ.odeint(model, [1, 0], t)
 plot.plot(t, res[:, 0])
+plot.plot(np.linspace(0, 5, len(j)), j)
 
 
 
