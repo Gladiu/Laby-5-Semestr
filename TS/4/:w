@@ -11,8 +11,8 @@ from scipy import signal
 
 Zadanie_2 = False
 Zadanie_3 = False
-Zadanie_4 = False
-Zadanie_5 = True
+Zadanie_4 = True
+Zadanie_5 = False
 #initialize constant values
 b = 0.5
 k = 1
@@ -105,10 +105,10 @@ if Zadanie_3:
 if Zadanie_5:
     #initialize all matrices of Kalman Filter - feel free to change these values  
     Xc = np.array([[3],[-1]]) #Xc (a posteriori estimate X) - assumed initial conditions
-    Pc = np.array([[3, -1],[.33,-1]]) #Pc (a posteriori P) - Chyba git, daje proporcjonalnie do X
+    Pc = np.array([[3, 0],[0,-1]]) #Pc (a posteriori P) - Chyba git, daje proporcjonalnie do X
 
-    Q = np.array([[2.5 ,0.25],[.25, -0.125]]) * 0.5 #Q - Górna linijka ustawia dobre parametry x2
-    R = 5 #100 # im więcej tym lepiej ale nie dla zadania 5 bo za bardzo wygładza
+    Q = np.array([[2.5,0.125],[.5, 0.125]]) * 0.1 #Q - Górna linijka ustawia dobre parametry x2
+    R = 1 #100 # im więcej tym lepiej ale nie dla zadania 5 bo za bardzo wygładza
 
 #some vectors to keep samples of Xc aposteriori and Xp apriori estimate for later plotting
 XC = Xc.T
