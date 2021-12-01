@@ -15,21 +15,7 @@ A = np.array([[0.0, 1.0], [-1.0/(C*L), -1.0/(C*R)]])
 B = np.array([[0],[Vin/C*L]])
 C = np.array([[1, 0]])
 
-def force(t):
-    return 1
 
-def model(x,t):
-    x_next = A @ np.array([[x[0]], [x[1]]]) + B * force(t)
-    return [x_next[0][0], x_next[1][0]]
-
-t = np.linspace(0, 0.7, 1000)
-
-res = odeint(model, [0, 0], t)
-
-pyplot.figure()
-pyplot.plot( t, res[:, 0])
-pyplot.plot( t, res[:, 1])
-pyplot.show()
 
 # Zadanie 2
 
@@ -37,3 +23,37 @@ l = sym.Symbol('lambda')
 eigen_values = sym.solve(sym.Matrix(A - l*np.eye(2)).det())
 print(eigen_values)
 
+# Zadanie 3
+
+def model(x,t):
+    x_next = A @ np.array([[x[0]], [x[1]]]) + B * force(t)
+    return [x_next[0][0], x_next[1][0]]
+
+def force(t):
+    return 1
+
+t = np.linspace(0, 0.7, 1000)
+V0 = [0, 5, 7]
+
+pyplot.figure()
+for i in range(len(V0)):
+
+    res = odeint(model, [V0[i], 0], t)
+
+    title = "Odpowiedź skokowa układu dla V0 = " + str(V0[i])
+    pyplot.subplot(3, 1, i+1)
+    pyplot.title(title)
+    pyplot.plot( t, res[:, 0])
+    pyplot.plot( t, res[:, 1])
+
+pyplot.show()
+
+# Zadanie 4
+# e' = A*e-B*u-A*x_d
+# e' = A*e-B*(Vd/Vin+ufb)-A*x_d
+# e' = A*e-B*(Vd/Vin)-B*u_fb-A*x_d
+# e' = A*e-B*u_fb-A*x_d-B*(Vd/Vin)
+# e' = A*e-B*u_fb-[[0], [Vd/-C*L]]-B*(Vd/Vin)
+# Podstawiamy B = np.array([[0],[Vin/C*L]])
+# e' = A*e-B*u_fb-[[0], [Vd/-C*L]]-[[0],[Vd/C*L]]
+# e' = A*e-B*u_fb
