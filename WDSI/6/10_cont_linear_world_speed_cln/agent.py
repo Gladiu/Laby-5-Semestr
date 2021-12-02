@@ -22,6 +22,7 @@ class Agent:
         self.dt = dt
         self.action_dir = 1
 
+        self.sigma_perc = sigma_perc
         self.sigma_move = sigma_move
 
         self.t = 0
@@ -62,7 +63,13 @@ class Agent:
     def correct_posterior(self, percept):
         # correct posterior using measurements
         # TODO PUT YOUR CODE HERE
+        H = np.array([[1, 0]])
+        R = self.sigma_perc ** 2
+        y = percept - H @ self.mu
 
+        K = self.Sigma @ H.T @ np.linalg.inv(H @ self.Sigma @ np.transpose(H) + R)
+        self.mu = self.mu + K @ y
+        self.Sigma = (np.eye(2) - K @ H) @ self.Sigma
 
         # ------------------
 
