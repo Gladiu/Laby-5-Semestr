@@ -26,7 +26,7 @@ class Agent:
         self.t = 0
         self.n = 20
         # initial particle set
-        self.p = np.random.random(self.n) * self.size
+        self.p = np.array(np.random.random(self.n) * self.size)
         self.w = np.ones(self.n, dtype=float) / self.n
 
     def __call__(self):
@@ -53,19 +53,43 @@ class Agent:
             self.p[i] += action + np.random.normal(0, self.sigma_sq_move, 1)[0]
         # ------------------
 
-        return
-
     def calculate_weights(self, percept):
+
         for i in range(len(self.p)):
-            self.w *= np.random.normal((percept-self.p[i]), self.sigma_sq_perc, 1)[0]
+            self.w[i] = math.exp(-(self.p[i]-percept) ** 2/ self.sigma_sq_perc)
+        
+        sumw = sum(self.w)
+        for i in range(len(self.p)):
+            self.w[i] /= sumw
         # TODO PUT YOUR CODE HERE
 
     def correct_posterior(self):
         # correct posterior using measurements
         # TODO PUT YOUR CODE HERE
-
-        pass
+        rng = np.random.default_rng()
+        # zbiór nowych cząsteczek
+        new_p = []
+        # początkowy indeks (miejsce skąd zaczynamy)
+        M = len(self.p)
+        index = rng.integers(0, M)
+        print(index)
+        # "beta" będzie oznaczała jak daleko znajduje się strzałka od początku cząsteczki o indeksie "index"
+        beta = 0.0
+        # największa waga cząsteczki, żeby wybrać sensowny zakres losowanych wartości "beta"
+        mw = max(self.w)
+        # losujemy M cząsteczek
+        for i in range(M):
+            # przesuwamy się o "beta" z rozkładu jednostajnego od 0 do 2mw
+            beta += np.random.uniform(0, 2.0*mw, 1)[0]
+            # szukamy indeksu, który odpowiada aktualnemu położeniu strzałki
+            while beta > self.w[index]:
+                # przeskakujemy na następną cząsteczkę, odejmując jej wagę od "beta"
+                beta -= self.w[index]
+                index = (index+1) % M
+            # dodaj cząsteczkę o indeksie "index" do zbioru wylosowanych cząsteczek
+            new_p.append(self.p[index])
         # ------------------
+        self.p = new_p
 
     def get_particles(self):
         return self.p
