@@ -1,0 +1,13 @@
+import numpy as np
+import scipy.signal as sig
+from scipy.integrate import odeint
+from matplotlib.pyplot import plot,show,title,figure,legend
+# 5.1
+# Punkt równowagi otrzymujemy przy wyzerowaniu wszystkich pochodnych układu
+# z pierwszego równania x2 = 0
+# z trzeciego równania pierwszy składnik nam sie zeruje więc
+# x3 = u/R3
+# zostało drugie równanie z którego otrzymujemy
+# x1 = (g*m*R3*R3)/km*u*u
+# podsumowując, punkt stacjonarny wynosi
+show()

@@ -69,6 +69,10 @@ C = np.array([[1, 0]])
 D = 0
 linearised_model = sig.StateSpace(A,B,C,D)
 
+# 4.6
+# Odpowiedzi układów nie pokrywają się, ponieważ linearyzacja nastąpiła w innym punkcie niż (0,0)
+# aby odpowiedź się pokrywała powinniśmy przenieść początek układu zlinearyzowanego w punkt w którym
+# nastąpiła linearyzacja.
 for u in [45 * np.sqrt(2),45 * np.sqrt(2) + 2, 45 * np.sqrt(2) + 10, 45 * np.sqrt(2) + 30 ]:
     figure()
 
@@ -89,5 +93,4 @@ for u in [45 * np.sqrt(2),45 * np.sqrt(2) + 2, 45 * np.sqrt(2) + 10, 45 * np.sqr
 
     legend(loc='best')
     title("Wymuszenie u = "+str(u))
-
 show()
