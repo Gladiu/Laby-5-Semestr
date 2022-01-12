@@ -31,11 +31,11 @@ k2 = 0
 K = np.array([[k1,k2]])
 H = A-B@K
 
-Q = np.array([[1, 0],[0,1]])
+Q = np.array([[1, 1],[1,1]])
 P = solve_continuous_lyapunov(H,Q)
 
-temp = np.linspace(-10,10,1000)
-x = np.vstack((temp,temp))
+x = np.linspace(-10,10,1000)
+x = np.vstack((x,x))
 
 V = 0.5 * x.T @ P @ x
 V_prime = -0.5 * x.T @ Q @ x
@@ -44,7 +44,9 @@ plot.figure()
 
 ax = plot.axes(projection='3d')
 #ax.plot_surface(x,x,V, cmap='viridis', edgecolor='none')
-ax.plot_surface(temp,V_prime,V, cmap='viridis', edgecolor='none')
+xmesh, ymesh = np.meshgrid( np.linspace(-10,10,1000), np.linspace(-10,10,1000))
+#ax.plot_surface(xmesh ,ymesh ,V, cmap='viridis', edgecolor='none')
+ax.plot_surface(xmesh ,ymesh ,V_prime, cmap='viridis', edgecolor='none')
 
 plot.show()
 
